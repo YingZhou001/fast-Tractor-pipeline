@@ -1,0 +1,27 @@
+Copyright (C) 2022 Brian L. Browning
+Enter "java -jar flare.jar" to print a list of command line arguments
+
+Program             :  flare.jar  [ version 0.2.0, 12Aug22.faa ]
+Start Time          :  02:46 PM PDT on 29 Aug 2022
+Max Memory          :  30688 MB
+
+Parameters
+  ref               :  ../tmp/19/1kg.19.imputed.vcf.gz
+  ref-panel         :  ../data/sample.anc.map.txt
+  gt                :  ../tmp/19/cohort.19.vcf.gz
+  map               :  ../data/plink.map/plink.chr19.GRCh38.map
+  out               :  ../tmp/19/cohort.19.flare-lai
+  min-maf           :  0.005
+  probs             :  false
+  gen               :  10.0
+  em                :  true
+  nthreads          :  8
+  seed              :  -99999
+
+Statistics
+  reference samples :  40
+  target samples    :  100
+  markers           :  216
+
+Wallclock Time      :  1 second
+End Time            :  02:46 PM PDT on 29 Aug 2022
