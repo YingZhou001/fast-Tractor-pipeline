@@ -40,11 +40,21 @@ We included an example in these folders, so you can just run the example without
 
 ## 1.target.cohort
 
-* requirement: 
-	* bcftools
+* requirement: bcftools
 
 In this folder, we will process the cohort genotype data of our interest. 
 Assume the genotype data is well phased and imputed, we will process the genotype data and only keep binary sites with imputation $r^2$ larger than 0.8 and minimum MAF larger than 0.5%. Duplicated sites are removing by keeping the first occurrence in vcf record.
+
+```bash
+bcftools norm -m +any ${sourcevcf} \
+| bcftools view --type snps -i 'INFO/R2>0.8' --min-alleles 2 \
+--max-alleles 2 --min-af 0.005:minor \
+| bcftools annotate -x ^FORMAT/GT,^INFO/R2 \
+| bcftools norm --rm-dup all -Oz --output ${outvcf}
+
+bcftools query -f '%CHROM:%POS:%REF:%ALT\n' ${outvcf} > ${snplist}
+```
+
 
 We may also use '-S' option of "bcftools" to subset samples for further analysis.
 
@@ -58,6 +68,17 @@ In this procedure, we will have high quality genotype data of the target cohort 
 In this folder, we will process the reference panel with diverse ancestries, which is the 1000 genome high coverage data set. 
 We will only keep the sites that overlapped with the cohort genotypes.
 
+```bash
+##join biallelic sites into multiallelic records
+bcftools norm -m +any ${sourcevcf} | bcftools query -f '%CHROM:%POS:%REF:%ALT\n' > ${tmpsnplist}
+
+##find out the shared sites with the targeted cohort
+grep -f ${tmpsnplist} ${cohortsnplist} | cut -f1,2 -d":" | sed "s/:/\t/g"  > ${snplist}
+rm ${tmpsnplist}
+
+##filtration
+bcftools view --types snps -S ${samples} -R ${snplist} ${sourcevcf} | bcftools annotate -x ^FORMAT/GT,INFO --force -Oz --output ${outvcf}
+```
 
 Note: you may need to re-header the X chromosome if you use the data downloaded from this [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/), the new header file is included in this pipeline.
 
@@ -73,6 +94,13 @@ bcftools index -t ${new_vcf}
 We will do reference based imputation with beagle software, other software may also used for this purpose. 
 We use cohort genome as the reference panel to impute genotypes that does not exist in the 1000 genome. An alternative way (not included in this pipeline) is to fill the missed genotypes with reference alleles, because the 1000 genome data is in high coverage WGS data.
 
+
+```bash
+beagle=beagle.22Jul22.46e.jar
+
+java -jar ${beagle} gt=${gt} ref=${ref} map=${map} out=${out} nthreads=${nthreads}
+```
+
 After this step we will have genotype inputs for local ancestry inference.
 
 
@@ -82,6 +110,13 @@ After this step we will have genotype inputs for local ancestry inference.
 
 From the first three steps, we have the input genotypes for local ancestry inference, the other required inputs for flare are recombination map and ancestry map for each reference sample. See flare [link] for more about the input format.
 
+
+```bash
+flare=flare.jar
+java -jar ${flare} ref=${refvcf} ref-panel=${refpanel} gt=${gt} map=${map} out=${out} nthreads=${nthreads}
+bcftools index -t -f ${out}.anc.vcf.gz
+
+```
 After this step, we will have ancestry information for each allele, the output is in compressed vcf format.
 
 
@@ -91,6 +126,10 @@ After this step, we will have ancestry information for each allele, the output i
 
 "cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the link in the "makefile". Please go seek help in your IT department if you meet any difficulties. 
 
+```bash
+extractAncestry=../src.v0/extractAncestry
+${extractAncestry} ${ancvcf} ${anc} ${outpref}
+```
 In this step, we will extract the ancestry tracts, and the genotypes from each ancestry for admixture mapping and the Tractor analysis.
 
 
@@ -100,4 +139,31 @@ In this step, we will extract the ancestry tracts, and the genotypes from each a
 
 With all data ready we can use plink to conduct association analysis on alleles from each ancestry tracts. Do feel free to modify the codes based on your own understanding of plink for your own research interest.
 
+```bash
+## Tractor analysis
+plink --vcf ${vcfpref}.anc${anc}.vcf.gz --vcf-half-call haploid \
+--allow-no-sex --pheno ${phenofile} --pheno-name ${pheno} \
+--covar ${covarfile} --covar-name  ${covarnames} \
+--logistic beta hide-covar --out ${outpref1}.anc${anc} \
+--ci 0.95 --freq case-control
+
+paste -d' ' ${outpref1}.anc${anc}.assoc.logistic ${outpref1}.anc${anc}.frq.cc \
+| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-12,17-20 -d' ' \
+| grep -v NA | gzip -c > ${outpref1}.anc${anc}.assoc.simple.gz
+
+mv ${outpref1}.anc${anc}.assoc.simple.gz ${final}/
+
+## admixture mapping
+plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --allow-no-sex \
+--pheno ${phenofile} --pheno-name ${pheno} --covar ${covarfile} \
+--covar-name  ${covarnames} --logistic beta hide-covar \
+--out ${outpref2}.anc${anc} --ci 0.95 --freq case-control
+
+paste -d' ' ${outpref2}.anc${anc}.assoc.logistic ${outpref2}.anc${anc}.frq.cc \
+| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-12,17-20 -d' ' \
+| grep -v NA | gzip -c > ${outpref2}.anc${anc}.admap.simple.gz
+
+mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
+
+```
 
