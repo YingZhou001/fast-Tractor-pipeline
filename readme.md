@@ -1,12 +1,12 @@
 # About
 
-This is a pipeline aimed to accelerate the Tractor analysis [link]. It is simpler and faster because it employs reference based phasing/imputation and the most efficient ancestry inference software flare [link].
+This is a pipeline aimed to accelerate the Tractor analysis [link](https://github.com/Atkinson-Lab/Tractor/wiki). It is simpler and faster because it employs reference based phasing/imputation and the most efficient ancestry inference software flare.
 
 This pipeline is developed under linux/unix environment, and can be easily adapted to high-performance-computing server for massive computation.
 
 This pipeline is also able to handle admixed population that has multiple ancestries.
 
-Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3@fredhutch.rog.
+Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
 
 Updated Date: 8/30/2022
 
@@ -14,7 +14,7 @@ Updated Date: 8/30/2022
 
 To run this pipeline, you need to know the basic knowledge of linux/unix and some common bioinformatic tools list in the bellow section.
 
-## computational tools
+## Computational tools
 
 * bcftools [link](https://samtools.github.io/bcftools/)
 * htslib v [link](https://github.com/samtools/htslib)
@@ -23,10 +23,10 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 * flare [link](https://github.com/browning-lab/flare)
 * extractAncestry [included in this pipeline]
 
-## data
+## Data
 
 * 1000 genome high coverage WGS data [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/)
-* recombination map in plink format [link](https://bochet.gcc.biostat.washington.edu/beagle/genetic_maps/)
+* Recombination map in plink format [link](https://bochet.gcc.biostat.washington.edu/beagle/genetic_maps/)
 
 # How to use this pipeline
 
@@ -59,10 +59,11 @@ In this folder, we will process the reference panel with diverse ancestries, whi
 We will only keep the sites that overlapped with the cohort genotypes.
 
 
-Notation: you may need to re-header the X chromosome if you use the data downloaded from [add link], the new header file is included in this pipeline.
+Note: you may need to re-header the X chromosome if you use the data downloaded from this [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/), the new header file is included in this pipeline.
 
 ```bash
-bcftools reheader 
+bcftools reheader -h 1000g.new.header.txt ${old_vcf} | bcftools annotate -x INFO,^FORMAT/GT -Oz -o ${new_vcf}
+bcftools index -t ${new_vcf}
 ```
 
 ## 3.imputation
