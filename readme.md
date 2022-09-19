@@ -16,7 +16,6 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 * bcftools v1.11 or later [link](https://samtools.github.io/bcftools/)
 * htslib v1.15.1 or later [link](https://github.com/samtools/htslib)
 * plink 1.9 [link](https://zzz.bwh.harvard.edu/plink/)
-* beagle 5.4 [link](https://faculty.washington.edu/browning/beagle/beagle.html)
 * flare [link](https://github.com/browning-lab/flare)
 * extractAncestry [included in this pipeline]
 
@@ -96,7 +95,7 @@ bcftools index -t ${new_vcf}
 
 From the first two steps, we have the input genotypes for local ancestry inference, the other required inputs for flare are recombination map and ancestry map for each reference sample. See flare [link](https://github.com/browning-lab/flare) for more information.
 
-ref: Fast, accurate local ancestry inference with FLARE [link](https://www.biorxiv.org/content/10.1101/2022.08.02.502540v1#:~:text=We%20present%20FLARE%20(Fast,techniques%20developed%20for%20genotype%20imputation.)
+ref: Fast, accurate local ancestry inference with FLARE [link](https://www.biorxiv.org/content/10.1101/2022.08.02.502540v1)
 
 ```bash
 flare=flare.jar
@@ -115,7 +114,7 @@ After this step, we will have ancestry information for each allele, the output i
 
 * requirement: extractAncestry, htslib
 
-"cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the library link in the "makefile". Please go seek help from your IT department if you have any difficulties. 
+"cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the library link in the "makefile". Please go seek for help from your IT department if you have any difficulties. 
 
 ```bash
 ## 'ancvcf' is output of flare
@@ -163,3 +162,7 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 
 **Note:** Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
 
+
+## License
+
+This pipeline is licensed under the Apache License, Version 2.0 (the License). You may obtain a copy of the License from [https://www.apache.org/licenses/LICENSE-2.0](//www.apache.org/licenses/LICENSE-2.0)
