@@ -82,7 +82,7 @@ bcftools view --types snps -S ${samples} -R ${snplist} ${sourcevcf} \
 | bcftools annotate -x ^FORMAT/GT,INFO --force -Oz --output ${outvcf}
 ```
 
-Note: you need to re-header the X chromosome if you use the data downloaded from this [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/), the new header file is included in this pipeline.
+**Note:** you need to re-header the X chromosome if you use the data downloaded from this [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/), a [new header file](data/1000g.new.header.txt) is included in this pipeline.
 
 ```bash
 bcftools reheader -h 1000g.new.header.txt ${old_vcf} \
@@ -94,7 +94,7 @@ bcftools index -t ${new_vcf}
 
 * requirement: flare, bcftools
 
-From the first two steps, we have the input genotypes for local ancestry inference, the other required inputs for flare are recombination map and ancestry map for each reference sample. See flare [link] for more about the input format.
+From the first two steps, we have the input genotypes for local ancestry inference, the other required inputs for flare are recombination map and ancestry map for each reference sample. See flare [link](https://github.com/browning-lab/flare) for more information.
 
 ref: Fast, accurate local ancestry inference with FLARE [link](https://www.biorxiv.org/content/10.1101/2022.08.02.502540v1#:~:text=We%20present%20FLARE%20(Fast,techniques%20developed%20for%20genotype%20imputation.)
 
@@ -108,7 +108,7 @@ bcftools index -t -f ${out}.anc.vcf.gz
 After this step, we will have ancestry information for each allele, the output is in compressed vcf format.
 
 
-*Notes:* the chromosome identifier should be the same format between the vcf of genotypes and the recombination map.
+**Note:** the chromosome identifier should be the same format between the vcf of genotypes and the recombination map.
 
 
 ## 4.ancestry.extraction 
@@ -161,5 +161,5 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 
 ```
 
-*Notes:* Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
+**Note:** Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
 
