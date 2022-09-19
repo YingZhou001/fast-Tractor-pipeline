@@ -21,7 +21,7 @@ nthreads=$7 ## number of threads to run local ancestry inference
 #nthread=5
 
 
-refvcf=${dir}/${reftag}.${chr}.imputed.vcf.gz
+refvcf=${dir}/${reftag}.${chr}.vcf.gz
 gt=${dir}/${cohorttag}.${chr}.vcf.gz
 out=${dir}/${cohorttag}.${chr}.flare-lai
 

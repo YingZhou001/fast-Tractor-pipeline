@@ -15,8 +15,8 @@ map=../data/plink.map/plink.chr${chr}.GRCh38.map
 
 job=O.${chr}.${cohorttag}
 
-sbatch --ntasks 1 --cpus-per-task ${nthreads} --mem 40G -J ${job} -o ${job}.%j --wrap="
+#sbatch --ntasks 1 --cpus-per-task ${nthreads} --mem 40G -J ${job} -o ${job}.%j --wrap="
 bash record.sh ${chr} ${reftag} ${cohorttag} ${dir} ${map} ${refpanel} ${nthreads}
-"
+#"
 done
 done
