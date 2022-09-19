@@ -17,7 +17,7 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 * htslib v1.15.1 or later [link](https://github.com/samtools/htslib)
 * plink 1.9 [link](https://zzz.bwh.harvard.edu/plink/)
 * flare [link](https://github.com/browning-lab/flare)
-* extractAncestry [included in this pipeline]
+* extractAncestry [this pipeline](src.v0/extractAncestry.v2.c)
 
 ## Data
 
