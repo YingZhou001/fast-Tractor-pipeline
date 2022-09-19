@@ -131,7 +131,7 @@ In this step, we will extract dosage and genotypes from each ancestry for admixt
 
 * requirement: plink1.9
 
-With all data ready we can use plink to conduct association analysis on alleles from each ancestry tracts. Do feel free to modify the codes based on your own understanding of plink for your own research interest.
+With all data ready we can use plink1.9 to conduct association analysis on alleles from each ancestry tracts and admixture mapping. Do feel free to modify the codes based on your own understanding of plink for your own research interest.
 
 ```bash
 ## Tractor analysis
@@ -160,4 +160,6 @@ paste -d' ' ${outpref2}.anc${anc}.assoc.logistic ${outpref2}.anc${anc}.frq.cc \
 mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 
 ```
+
+*Notes:* Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
 
