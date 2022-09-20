@@ -1,11 +1,11 @@
 # About
 
-This is a pipeline aimed to conduct admixture mapping and simplify the Tractor analysis [link](https://github.com/Atkinson-Lab/Tractor/wiki). 
-This pipeline can handle admixed population that has multiple ancestries.
+This is a simple pipeline designed for admixture mapping and the [Tractor analysis](https://github.com/Atkinson-Lab/Tractor/wiki). 
+It can handle admixed population that has multiple ancestries.
 
-This pipeline is developed under linux/unix environment, and it can be easily adapted to high-performance-computing server for massive computation. Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
+This pipeline is developed under the linux/unix environment, and it can be easily adapted to high-performance-computing server for massive computation. Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
 
-Updated Date: 9/19/2022
+Updated Date: 9/20/2022
 
 # Requirement
 
@@ -28,7 +28,7 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 
 1. Download all folders to your local disk and install all required software.
 2. Follow the procedures in the order of folders' names.
-3. In each folder, the "record.sh" records function scripts, and the "run.sh" specifies input, output and also job submission command. Feel free to modify them based on your own understanding.
+3. In each folder, the "record.sh" records function scripts, and the "run.sh" specifies input, output and also job submission commands. Feel free to modify them based on your own understanding.
 
 We included an example data set, so you can just run the example without changing any input/output parameters.
 
@@ -39,9 +39,9 @@ We included an example data set, so you can just run the example without changin
 * requirement: bcftools
 
 In this folder, we will process the cohort genotype data in vcf format. 
-Assume the genotype data is well phased and imputed, we will process the genotype data and only keep binary sites with imputation $R^2$ larger than 0.8 and minimum MAF larger than 0.5%. Duplicated sites are removing by keeping the first occurrence in vcf record.
+Assume the genotype data is well phased and imputed, we will process the genotype data and only keep binary sites with imputation $R^2$ larger than 0.8 and minimum MAF larger than 0.5%. Duplicated sites are removing by keeping the first occurrence in the vcf record.
 
-If the imputation score $R^2$ is not in the vcf file, you need to remove "-i 'INFO/R2>0.8'" and ",^INFO/R2" from the following command and use other tools to create filtered genotype data set.
+If the imputation score $R^2$ is not in the vcf file, you need to remove "-i 'INFO/R2>0.8'" and ",^INFO/R2" from the following command and use other tools to create a filtered genotype data set.
 
 ```bash
 bcftools norm -m +any ${sourcevcf} \
@@ -53,7 +53,7 @@ bcftools norm -m +any ${sourcevcf} \
 bcftools query -f '%CHROM:%POS:%REF:%ALT\n' ${outvcf} > ${snplist}
 ```
 
-We may also use '-S' option of "bcftools view" to subset samples for further analysis.
+We may also use the '-S' option for "bcftools view" to subset samples for further analysis.
 
 In this procedure, we will have high quality genotype data of the target cohort and the list of SNPs we are interested in.
 
@@ -63,7 +63,7 @@ In this procedure, we will have high quality genotype data of the target cohort 
 * requirement: bcftools
 
 In this folder, we will process the reference panel with diverse ancestries, which is the 1000 genome high coverage data set. 
-We will only keep the sites that overlapped with the cohort genotypes.
+We will only keep the sites that overlap with the cohort genotypes.
 
 ```bash
 ##join biallelic sites into multiallelic records
@@ -95,7 +95,7 @@ bcftools index -t ${new_vcf}
 
 From the first two steps, we have the input genotypes for local ancestry inference, the other required inputs for flare are recombination map and ancestry map for each reference sample. See flare [link](https://github.com/browning-lab/flare) for more information.
 
-ref: Fast, accurate local ancestry inference with FLARE [link](https://www.biorxiv.org/content/10.1101/2022.08.02.502540v1)
+REF: Fast, accurate local ancestry inference with FLARE [link](https://www.biorxiv.org/content/10.1101/2022.08.02.502540v1)
 
 ```bash
 flare=flare.jar
@@ -104,7 +104,7 @@ map=${map} out=${out} nthreads=${nthreads}
 bcftools index -t -f ${out}.anc.vcf.gz
 
 ```
-After this step, we will have ancestry information for each allele, the output is in compressed vcf format.
+After this step, we will have ancestry information for each allele; the output is in compressed vcf format.
 
 
 **Note:** the chromosome identifier should be the same format between the vcf of genotypes and the recombination map.
@@ -114,7 +114,7 @@ After this step, we will have ancestry information for each allele, the output i
 
 * requirement: extractAncestry, htslib
 
-"cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the library link in the "makefile". Please go seek for help from your IT department if you have any difficulties. 
+"cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the library link in the "makefile". Then type "make" to compile to get the executable program `extractAncestry`. Seek help from your IT department if you have any difficulties. 
 
 ```bash
 ## 'ancvcf' is output of flare
@@ -166,3 +166,9 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 ## License
 
 This pipeline is licensed under the Apache License, Version 2.0 (the License). You may obtain a copy of the License from [https://www.apache.org/licenses/LICENSE-2.0](//www.apache.org/licenses/LICENSE-2.0)
+
+## Acknoledgement
+ 
+[Yingchang (Kevin) Lu](https://medicine.vumc.org/person/yingchang-kevin-lu-md-phd) tested this pipeline and provided practical suggestions. 
+
+[Charles Kooperberg](https://www.fredhutch.org/en/faculty-lab-directory/kooperberg-charles.html) proofreaded this pipeline and provided helpful comments. 
