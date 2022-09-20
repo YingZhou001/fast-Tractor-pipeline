@@ -119,7 +119,12 @@ After this step, we will have ancestry information for each allele; the output i
 ```bash
 ## 'ancvcf' is output of flare
 ## 'anc' is the ancestry code for each ancestry, see the header of flare's output
-## 'outpref' is the output prefix, two outputs will be generated: ${vcfpref}.anc${anc}.vcf.gz is haplotypes from genome tracts of the specific ancestry, defined by 'anc' variable; ${vcfpref}.hapanc${anc}.vcf.gz is ancestry copy number of every variant on each haplotype.
+## 'outpref' is the output prefix, two outputs will be generated: 
+#### ${vcfpref}.anc${anc}.vcf.gz is haplotypes from genome tracts of 
+#### the specific ancestry, defined by 'anc' variable; 
+#### ${vcfpref}.hapanc${anc}.vcf.gz is ancestry copy number (1/0) 
+#### of every variant on each haplotype.
+
 extractAncestry=../src.v0/extractAncestry
 ${extractAncestry} ${ancvcf} ${anc} ${outpref}
 ```
