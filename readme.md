@@ -1,9 +1,9 @@
 # About
 
 This is a simple pipeline designed for admixture mapping and the [Tractor analysis](https://github.com/Atkinson-Lab/Tractor/wiki). 
-It can handle admixed population that has multiple ancestries.
+It can handle admixed population that has multiple ancestries. This pipeline is developed under the linux/unix environment, and it can be easily adapted to high-performance-computing server for massive computation. 
 
-This pipeline is developed under the linux/unix environment, and it can be easily adapted to high-performance-computing server for massive computation. Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
+Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
 
 Updated Date: 9/20/2022
 
@@ -163,12 +163,12 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 **Note:** Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
 
 
-## License
+# License
 
 This pipeline is licensed under the Apache License, Version 2.0 (the License). You may obtain a copy of the License from [https://www.apache.org/licenses/LICENSE-2.0](//www.apache.org/licenses/LICENSE-2.0)
 
-## Acknoledgement
- 
+# Acknoledgement
+
 [Yingchang (Kevin) Lu](https://medicine.vumc.org/person/yingchang-kevin-lu-md-phd) tested this pipeline and provided practical suggestions. 
 
 [Charles Kooperberg](https://www.fredhutch.org/en/faculty-lab-directory/kooperberg-charles.html) proofreaded this pipeline and provided helpful comments. 
