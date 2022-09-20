@@ -126,7 +126,7 @@ ${extractAncestry} ${ancvcf} ${anc} ${outpref}
 In this step, we will extract dosage and genotypes from each ancestry for admixture mapping and the Tractor analysis.
 
 
-## 5.Tractor analysis and admixture mapping.
+## 5.association.and.admixture.mapping
 
 * requirement: plink1.9
 
