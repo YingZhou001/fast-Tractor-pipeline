@@ -6,8 +6,8 @@ do
 for cohorttag in cohort
 do
 dir=../tmp/${chr}
-plinkoutdir=../out/${cohorttag}.ANC.plink.out
-finaloutdir=../out/${cohorttag}.ANC.final.out
+plinkoutdir=../out/${cohorttag}.ANC.plink.out ## plink output
+finaloutdir=../out/${cohorttag}.ANC.final.out ## formatted output of summary statistics
 mkdir -p ${plinkoutdir} ${finaloutdir}
 
 for pheno in MI CAD
