@@ -3,7 +3,7 @@
 This is a fast pipeline for admixture mapping. It simplifies the [Tractor analysis](https://github.com/Atkinson-Lab/Tractor/wiki), 
 and it can handle admixed population that has multiple ancestries. This pipeline is developed and tested under the linux/unix environment, and it can be easily adapted to high-performance-computing server for massive computation. 
 
-Any questions or complaints are welcomed to post in the issue section or emailed to yzhou3 at fredhutch.org .
+Any questions or complaints are welcomed to post in the issue section or emailed to yingzhou at ds.dfci.harvard.edu .
 
 Updated Date: 9/20/2022
 
