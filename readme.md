@@ -146,7 +146,7 @@ plink --vcf ${vcfpref}.anc${anc}.vcf.gz --vcf-half-call haploid \
 --ci 0.95 --freq case-control
 
 paste -d' ' ${outpref1}.anc${anc}.assoc.logistic ${outpref1}.anc${anc}.frq.cc \
-| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-12,17-20 -d' ' \
+| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-12,16-20 -d' ' \
 | grep -v NA | gzip -c > ${outpref1}.anc${anc}.assoc.simple.gz
 
 mv ${outpref1}.anc${anc}.assoc.simple.gz ${final}/
@@ -158,7 +158,7 @@ plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --allow-no-sex \
 --out ${outpref2}.anc${anc} --ci 0.95 --freq case-control
 
 paste -d' ' ${outpref2}.anc${anc}.assoc.logistic ${outpref2}.anc${anc}.frq.cc \
-| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-12,17-20 -d' ' \
+| sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-3,5-12,17-20 -d' ' \
 | grep -v NA | gzip -c > ${outpref2}.anc${anc}.admap.simple.gz
 
 mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
@@ -172,7 +172,7 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 
 This pipeline is licensed under the Apache License, Version 2.0 (the License). You may obtain a copy of the License from [https://www.apache.org/licenses/LICENSE-2.0](//www.apache.org/licenses/LICENSE-2.0)
 
-# Acknoledgement
+# Acknowledgement
 
 [Yingchang (Kevin) Lu](https://medicine.vumc.org/person/yingchang-kevin-lu-md-phd) tested this pipeline and provided practical suggestions. 
 
