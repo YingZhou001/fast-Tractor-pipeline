@@ -165,8 +165,9 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 
 ```
 
-**Note:** Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
-
+**Note:** 
+ 1. Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
+ 2. :warning: For users in Consortium of African Ancestry Working Group for Coronary Artery Disease, the covariables may include age, sex, PCs or another metric of overall admixture fraction. 
 
 # License
 
