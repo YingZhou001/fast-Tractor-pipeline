@@ -10,7 +10,7 @@ map=$5 ## recombination map in plink format
 refpanel=$6 ## ancestry information for each sample, in the format of "sample id"+"tab"+"ancestry"
 nthreads=$7 ## number of threads to run local ancestry inference
 
-minmac=15
+minmac=15 # set to flare's default as 50 if sample size is large for example > 1000
 
 
 #chr=19
