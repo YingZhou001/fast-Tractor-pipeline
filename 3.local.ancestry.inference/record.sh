@@ -10,6 +10,7 @@ map=$5 ## recombination map in plink format
 refpanel=$6 ## ancestry information for each sample, in the format of "sample id"+"tab"+"ancestry"
 nthreads=$7 ## number of threads to run local ancestry inference
 
+minmac=15
 
 
 #chr=19
@@ -26,5 +27,5 @@ gt=${dir}/${cohorttag}.${chr}.vcf.gz
 out=${dir}/${cohorttag}.${chr}.flare-lai
 
 
-java -jar ${flare} ref=${refvcf} ref-panel=${refpanel} gt=${gt} map=${map} out=${out} nthreads=${nthreads}
+java -jar ${flare} ref=${refvcf} ref-panel=${refpanel} gt=${gt} map=${map} out=${out} nthreads=${nthreads} minmac=${minmac}
 bcftools index -t -f ${out}.anc.vcf.gz
