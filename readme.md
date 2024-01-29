@@ -5,7 +5,7 @@ and it can handle admixed population that has multiple ancestries. This pipeline
 
 Any questions or complaints are welcomed to post in the issue section or emailed to yingzhou at ds.dfci.harvard.edu .
 
-Updated Date: 9/20/2022
+Updated Date: 1/29/2024
 
 # Requirement
 
@@ -13,11 +13,13 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 
 ## Computational tools
 
+* Rust, cargo [link](https://www.rust-lang.org/)
 * bcftools v1.11 or later [link](https://samtools.github.io/bcftools/)
 * htslib v1.15.1 or later [link](https://github.com/samtools/htslib)
 * plink 1.9 [link](https://zzz.bwh.harvard.edu/plink/)
 * flare [link](https://github.com/browning-lab/flare)
-* extractAncestry [link](src.v0/extractAncestry.v2.c)
+* vcf_anc_formatter [link](src.v1/vcf_anc_formatter)
+* tractor_anc_formatter [link](src.v1/tractor_anc_formatter)
 
 ## Data
 
@@ -27,10 +29,10 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 # How to use this pipeline
 
 1. Download all folders to your local disk and install all required software.
-2. Follow the procedures in the order of folders' names.
-3. In each folder, the "record.sh" records function scripts, and the "run.sh" specifies input, output and also job submission commands. Feel free to modify them based on your own understanding.
+3. Follow the procedures in the order of folders' names.
+4. In each folder, the "record.sh" records function scripts, and the "run.sh" specifies input, output and also job submission commands. Feel free to modify them based on your own understanding.
 
-We included an example data set, so you can just run the example without changing any input/output parameters.
+We included an example data set, so you can just run the example with minimum changing input/output location.
 
 # Folders & Procedures
 
@@ -100,7 +102,7 @@ REF: Fast, accurate local ancestry inference with FLARE [link](https://www.biorx
 ```bash
 flare=flare.jar
 java -jar ${flare} ref=${refvcf} ref-panel=${refpanel} gt=${gt} \
-map=${map} out=${out} nthreads=${nthreads}
+map=${map} out=${out} nthreads=${nthreads} minmac=15 # minmac default value is 50, if sample size is large enough, change it back to 50.
 bcftools index -t -f ${out}.anc.vcf.gz
 
 ```
@@ -112,9 +114,9 @@ After this step, we will have ancestry information for each allele; the output i
 
 ## 4.ancestry.extraction 
 
-* requirement: extractAncestry, htslib
+* requirement: vcf_anc_formatter, htslib
 
-"cd" into the script folder and compile the c program "extractAncestry". You need to install htslib first and modify the library link in the "makefile". Then type "make" to compile to get the executable program `extractAncestry`. Seek help from your IT department if you have any difficulties. 
+"cd" into the script folder and compile the c program "vcf_anc_formatter" [link](src.v1/vcf_anc_formatter). You need to install htslib first and modify the library link in the "makefile". Then type "make" to compile to get the executable program `vcf_anc_formatter`. Seek help from your IT department if you have any difficulties. 
 
 ```bash
 ## 'ancvcf' is output of flare
@@ -125,7 +127,7 @@ After this step, we will have ancestry information for each allele; the output i
 #### ${vcfpref}.hapanc${anc}.vcf.gz is ancestry copy number (1/0) 
 #### of every variant on each haplotype.
 
-extractAncestry=../src.v0/extractAncestry
+extractAncestry=../src.v1/vcf_anc_formatter/vcf_anc_formatter
 ${extractAncestry} ${ancvcf} ${anc} ${outpref}
 ```
 In this step, we will extract dosage and genotypes from each ancestry for admixture mapping and the Tractor analysis.
@@ -168,6 +170,45 @@ mv ${outpref2}.anc${anc}.admap.simple.gz ${final}/
 **Note:** 
  1. Gender specific or combined analyses on chrX can be done through modifying the input file of phenotypes and covariables.
  2. :warning: Attention :warning: For users in Consortium of African Ancestry Working Group for Coronary Artery Disease, the covariables may include age, sex, PCs or another metric of overall admixture fraction. 
+
+## 6.ancestry.extraction.for.tractor
+* requirement: tractor_anc_formatter, Rust, cargo
+
+We need to rebuild a Rust program tractor_anc_formatter [link](src.v1/tractor_anc_formatter) for fast extracting hapcount files and dosage files for the Tractor analysis, the original python version is [here](https://github.com/Atkinson-Lab/Tractor/blob/master/scripts/extract_tracts_flare.py). In the 'src.v1/tractor_anc_formatter' folder, type 'cargo build -r', the excutable tool is located at 'src.v1/tractor_anc_formatter/target/release', then you can use it to format flare's output for tractor analysis:
+
+```
+formatter=../src.v1/tractor_anc_formatter/target/release/tractor_anc_formatter
+ancvcf=${dir}/${cohorttag}.${chr}.flare-lai.anc.vcf.gz
+outpref=${dir}/${cohorttag}.${chr}.flare-lai
+
+${formatter} ${ancvcf} ${outpref}
+```
+
+## 7.run_tractor
+* requirement: run_tractor_yz.R
+
+The original Rscript for admixture-corrected-association analysis is from [link](https://github.com/Atkinson-Lab/Tractor/blob/master/scripts/run_tractor.R), we post a modified version [here](src.v1/run_tractor_yz.R) with following improvements:
+
+1. Support compressed input (*.gz)
+2. Don't require that covars file and genotype (hapcount/dosage) files share exact the same samples and the same order, which saves the data formatting time. 
+3. Lower the memmory requirements by loading genotype per SNP.
+
+It could be bit slower but more robust to run.
+
+You can follow [the original description](https://github.com/Atkinson-Lab/Tractor/blob/master/README.md) or our examples to run this script.
+
+```
+hapdosepref=${inpdir}/${cohorttag}.${chr}.flare-lai.anc
+covar=../data/covars.for.tractor/${cohorttag}.${phe}.csv
+out=${outdir}/${cohorttag}.${chr}.${phe}.tractor.out.txt
+
+Rscript ../src.v1/run_tractor_yz.R \
+--hapdose ${hapdosepref} \
+--phe ${covar} \
+--method logistic \
+--out ${out}
+```
+
 
 # License
 
