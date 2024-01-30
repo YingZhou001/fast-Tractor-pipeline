@@ -27,6 +27,8 @@ bcftools norm -m +any ${sourcevcf} | bcftools query -f '%CHROM:%POS:%REF:%ALT\n'
 
 ##find out the shared sites with the targeted cohort
 grep -f ${tmpsnplist} ${cohortsnplist} | cut -f1,2 -d":" | sed "s/:/\t/g"  > ${snplist}
+#### alternative solution for finding the overlapping variants if the grep command is too slow
+# cat ${tmpsnplist} ${cohortsnplist} | sort | uniq -D | cut -f1,2 -d":" | sed "s/:/\t/g" | sort -k2 -n | uniq > ${snplist}
 rm ${tmpsnplist}
 
 ##filtration
