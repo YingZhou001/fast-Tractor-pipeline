@@ -82,6 +82,8 @@ RunTractor <- function(prefix, phefile, method, outfile){
     hdrs = lapply(inFileCons, function(con){unlist(strsplit(readLines(con, n=1), '\t'))})
     ID = ID[ID %in% hdrs[[1]][-(1:5)]]
 
+    if(length(ID) == 0) stop("[Exit] No overlapped samples are selected")
+
 # updates all files
     rownames(phe) = phe[,1]
     phe = phe[ID, ]
