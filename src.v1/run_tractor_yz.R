@@ -87,7 +87,7 @@ RunTractor <- function(prefix, phefile, method, outfile){
 # updates all files
     rownames(phe) = phe[,1]
     phe = phe[ID, ]
-    selcolumn = c("CHROM", "POS", "ID", "REF","ALT", ID)
+    sel_colmn = c("CHROM", "POS", "ID", "REF","ALT", ID)
 
     ID = phe[,1]  ### --> yz
     y = phe[,2] ### --> yz
@@ -112,7 +112,6 @@ RunTractor <- function(prefix, phefile, method, outfile){
     write.table(resDF, outfile,  quote = F, row.names = F, sep = "\t")
 
     i = 0    
-    sel_colmn = c("CHROM", "POS", "ID", "REF", "ALT", ID)
     while(T){
       i = i + 1
 # matrix of Local Ancestry and Genotype
