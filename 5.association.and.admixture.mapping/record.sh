@@ -36,7 +36,7 @@ mv ${outpref1}.anc${anc}.assoc.simple.gz ${final}/
 
 ## admixture mapping
 
-plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --allow-no-sex --pheno ${phenofile} --pheno-name ${pheno} --covar ${covarfile} --covar-name  ${covarnames} --logistic beta hide-covar --out ${outpref2}.anc${anc} --ci 0.95 --freq case-control
+plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --keep-allele-order --allow-no-sex --pheno ${phenofile} --pheno-name ${pheno} --covar ${covarfile} --covar-name  ${covarnames} --logistic beta hide-covar --out ${outpref2}.anc${anc} --ci 0.95 --freq case-control
 
 paste -d' ' ${outpref2}.anc${anc}.assoc.logistic ${outpref2}.anc${anc}.frq.cc | sed "s/ \+/ /g" | sed "s/^ //g" | cut -f1-3,5-12,17-20 -d' ' | grep -v NA | gzip -c > ${outpref2}.anc${anc}.admap.simple.gz
 
