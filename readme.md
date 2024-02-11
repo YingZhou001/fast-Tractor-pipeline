@@ -23,7 +23,7 @@ To run this pipeline, you need to know the basic knowledge of linux/unix and som
 
 ## Data
 
-* 1000 genome high coverage WGS data [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/)
+* 1000 genome high coverage WGS data [link](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20201028_3202_phased/), and meta information [link](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/20130606_g1k_3202_samples_ped_population.txt)
 * Recombination map in plink format [link](https://bochet.gcc.biostat.washington.edu/beagle/genetic_maps/)
 
 # How to use this pipeline
