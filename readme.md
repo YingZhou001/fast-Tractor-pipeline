@@ -154,7 +154,7 @@ paste -d' ' ${outpref1}.anc${anc}.assoc.logistic ${outpref1}.anc${anc}.frq.cc \
 mv ${outpref1}.anc${anc}.assoc.simple.gz ${final}/
 
 ## admixture mapping
-plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --allow-no-sex \
+plink --vcf ${vcfpref}.hapanc${anc}.vcf.gz --keep-allele-order --allow-no-sex \
 --pheno ${phenofile} --pheno-name ${pheno} --covar ${covarfile} \
 --covar-name  ${covarnames} --logistic beta hide-covar \
 --out ${outpref2}.anc${anc} --ci 0.95 --freq case-control
