@@ -1,6 +1,6 @@
 
 
-extractAncestry=../src.v0/extractAncestry
+extractAncestry=../src.v1/vcf_anc_formatter
 
 
 
