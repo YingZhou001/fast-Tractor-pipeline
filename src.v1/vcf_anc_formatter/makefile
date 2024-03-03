@@ -3,7 +3,7 @@
 CC=gcc -W -g
 HTSLIBDIR=/homes8/yingzhou/Tools/pub/htslib/htslib-1.17.install/lib
 HTSINCDIR=/homes8/yingzhou/Tools/pub/htslib/htslib-1.17.install/include
-LINKPATH= -I${HTSINCDIR} -L${HTSLIBDIR} -lhts
+LINKPATH= -I${HTSINCDIR} -L${HTSLIBDIR} -lhts -DHTSLIB
 
 all: vcf_anc_formatter
 
