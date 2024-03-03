@@ -12,6 +12,4 @@ cd htslib-1.19.1
 ./configure prefix==fullpath/to/htslib-1.19.1-install
 make
 make install
-# add the lib path to the searching path: usually edit the ".bashrc" file by adding following line:
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:fullpath/to/htslib-1.19.1-install/lib
 ```
