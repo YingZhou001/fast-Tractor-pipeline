@@ -9,7 +9,7 @@ mkdir htslib-1.19.1-install
 # show full path of installation location
 ls htslib-1.19.1-install
 cd htslib-1.19.1
-./configure prefix==fullpath/to/htslib-1.19.1-install
+./configure prefix=fullpath/to/htslib-1.19.1-install
 make
 make install
 ```
